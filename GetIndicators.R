@@ -1,5 +1,5 @@
 # Libraries
-library(tidyverse)
+library(dplyr)
 library(quantmod)
 library(lubridate)
 
@@ -48,6 +48,7 @@ get_indicators <-
       )
     
     ## Periodized (Like annualized but sounding idiotic, yet robust) returns
+    
     ret <-
       as.vector(mean(periodReturn(data_historical, period = indicator_period))) #ISSUE: This calculates for periods, e.g. years, and meanns the values (not the specified date period itself)
     
@@ -61,7 +62,7 @@ get_indicators <-
     data_hist_vol <- tail(data_historical[, 4], 6)
     
     ## Logic: if last day volume is higher than 1 standart deviation than mean of 5 days before that, then there was a volume trend shift
-    volatility_increase <-
+    volume_increase <-
       as.vector(ifelse(data_hist_vol[1] >= (
         mean(data_hist_vol[2:6]) + sd(data_hist_vol[2:6])
       ), T, F))
@@ -72,7 +73,7 @@ get_indicators <-
         "Returns" = ret,
         "Volatility" = vol,
         "Sharpe ratio" = sharpe,
-        "Volatility trend shift" = volatility_increase
+        "Volume trend shift" = volume_increase
       )
     )
   }
