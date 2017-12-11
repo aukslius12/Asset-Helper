@@ -125,7 +125,7 @@ end = Sys.Date()) {
 
 #Testing
 #SearchAndFilter()
-# SearchAndFilter(parameters = c(
+#SearchAndFilter(parameters = c(
 #    "Volatility" = 0.2,
 #   "Returns" = 0.3,
 #    "Sharpe ratio" = 1,
