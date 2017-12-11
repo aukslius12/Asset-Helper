@@ -4,6 +4,7 @@
 
 import os
 from os.path import join
+import pandas as pd
 
 #Locates local Chrome path and returns it.
 #ISSUE 1: Only works for chrome. Universal browser would be awesome (useless now, but might be useful someday). Maybe get the default browser somehow?
@@ -20,10 +21,21 @@ def LocateChromePath():
 def OpenWebsite(path, webpage="www.google.com"):
     os.system(path + " %s" % webpage)
 
-#TODO: Returns all financial statement urls out of a file and returns them in a dataframe.
+#Returns all financial statement urls out of a file and returns them in a dataframe.
 def GetAllUrls ():
+    path_file = os.getcwd()
+    df_urls = pd.read_csv(path_file + '\\FinancialStatementData.csv')
+    return(df_urls)
+
+#Gets specified url of a financial statement out of GetALLUrls (can be merged into one function if the code is clear enough). Input is df from GetAllUrls()
+#ISSUE: It would be great, if this returned the LAST quartely data, instead of user having to find it, open etc. This would be a relatively large project itself so it waaay into the future.
+def GetTickerUrl (ticker_name, df_urls):
+    #Find the url
+    ticker_url = df_urls.loc[df_urls.ticker == ticker_name].url
+    #Store as string
+    ticker_url_str = ticker_url.values[0]
+    #Open website
+    OpenWebsite(LocateChromePath(), ticker_url_str)
     return(null)
 
-#TODO: Gets specified url of a financial statement out of GetALLUrls (can be merged into one function if the code is clear enough)
-def GetTickerUrl ():
-    return(null)
+#TODO: Test everything in an ordely fashion.
