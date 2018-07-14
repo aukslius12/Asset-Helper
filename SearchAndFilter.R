@@ -2,6 +2,7 @@
 library(dplyr)
 library(readr)
 library(stringr)
+library(tibble)
 
 #--------- SearchAndFilter Function ------------
 # Input can be nothing or:
@@ -30,10 +31,7 @@ end = Sys.Date()) {
   }
   
   ## Load required information
-  ######Temp
-  source_wd <-
-    "D:\\Projects\\Studies\\Finance Economics\\Asset-Helper"
-  #source_wd <- getwd()
+  source_wd <- getwd()
   snp_500 <- read_csv(str_c(source_wd, "/SNP 500 Companies.csv"))
   #ISSUE 1: If there was a change in this list after a revision, it becomes outdated. Loading from official data website would be optimal but takes too much time.
   #ISSUE 2:
@@ -56,7 +54,7 @@ end = Sys.Date()) {
     #Sys.sleep(0.1) #Might be required if an extremely fast internet is present. Tested on 12 MBPS internet.
     data_indicator <-
       rbind(data_indicator,
-            get_indicators(ticker, source, indicator_period, start, end))
+            GetIndicators(ticker, source, indicator_period, start, end))
   }
   options(warn = 0)
   results <- as.tibble(cbind(snp_500, data_indicator))

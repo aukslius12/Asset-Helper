@@ -8,12 +8,13 @@ library(lubridate)
 # Returns Annualized returns, volatility, and sharpe ratio. Also measures if there was a volume shift.
 
 
-get_indicators <-
-  function(stock_name,
+GetIndicators <-
+  function(stock_name = "AAPL",
            source = "google",
            indicator_period = "yearly",
            start = Sys.Date() - 365,
-           end = Sys.Date()) {
+           end = Sys.Date(),
+           return_historical = FALSE) {
     
     ## Testing for errors in input
     if (!source %in% c("google", "yahoo")){
@@ -68,16 +69,20 @@ get_indicators <-
       ), T, F))
     
     ## Store and return results
-    return(
-      tibble(
-        "Returns" = ret,
-        "Volatility" = vol,
-        "Sharpe ratio" = sharpe,
-        "Volume trend shift" = volume_increase
-      )
+    results <-         tibble(
+      "Returns" = ret,
+      "Volatility" = vol,
+      "Sharpe ratio" = sharpe,
+      "Volume trend shift" = volume_increase
     )
+    if (return_historical == FALSE){
+      return(results)
+    } else {
+      return(list(results, data.frame(data_historical)))
+    }
   }
 
 # Testing
 #get_indicators("AAPL", source = "google", indicator_period = "yearly", start = Sys.Date() - 365, end = Sys.Date())
-#get_indicators("AAPL")
+#get_indicators("TSLA")
+#get_indicators()
